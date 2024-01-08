@@ -1,0 +1,39 @@
+openapi: "3.0.0"
+info:
+  title: Report service
+  version: "1.0"
+  description: "
+    - готовит сводные отчёты для оценки HR-стратегии и стратегии развития сотрудников
+    "
+paths:
+  /reports/createTeamReport:
+    post:
+      description: Отчёт "Результаты подбора команд"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/CreateReportBody"
+      responses:
+        200:
+          description: success
+
+  /reports/createEducationReport:
+    post:
+      description: Отчёт "Индивидуальные карьерные траектории"
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/CreateReportBody"
+      responses:
+        200:
+          description: success
+
+
+components:
+  schemas:
+    CreateReportBody:
+      properties:
+        login_for_result:
+          type: string

@@ -1,0 +1,43 @@
+openapi: "3.0.0"
+info:
+  title: Notification service
+  version: "1.0"
+  description: "
+    - отправляет уведомления сотрудникам в мессенджер \n
+    - отправляет уведомления сотрудникам через почту
+    "
+paths:
+  /sendChatNotification:
+    post:
+      description: Отправить уведомление в чат
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/NotificationBody"
+      responses:
+        200:
+          description: success
+
+  /sendEmailNotification:
+    post:
+      description: Отправить уведомление на почту
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/NotificationBody"
+      responses:
+        200:
+          description: success
+
+components:
+  schemas:
+    NotificationBody:
+      properties:
+        login:
+          type: string
+        message:
+          type: string
+        attachments:
+          type: array

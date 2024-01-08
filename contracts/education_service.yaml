@@ -1,39 +1,104 @@
 openapi: "3.0.0"
 info:
-    title: Eduction service
-    version: "1.0"
-    description: "
+  title: Eduction service
+  version: "1.0"
+  description: "
     - предоставляет информацию о курсах \n
     - позволяет составлять индивидуальные планы развития сотрудника \n
-    - позволяет отслеживать прогресс выполнения курсов (api образовательных платформ) \n
-    - позволяет отслеживать прогресс выполнения индивидуальных планов развития
+    - позволяет отслеживать прогресс выполнения курсов (api образовательных платформ)
     "
 paths:
-    /courses:
-        get:
-          description: Список доступных курсов
-          responses:
-            200:
-              description: test
-              content:
-                "application/json":
-                  schema:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/course"
+  /courses:
+    get:
+      description: Список доступных курсов
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
 
-        post:
-          description: Добавить курс
-          responses:
-            200:
-              description: test
-
+    post:
+      description: Добавить курс
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/Course"
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Course"
+  /employees/{login}/courses:
+    get:
+      description: Получить список курсов, на которые записан сотрудник
+      parameters:
+        - in: path
+          name: login
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+  /employees/{login}/courses/{id}:
+    post:
+      description: Записать сотрудника на курс
+      parameters:
+        - in: path
+          name: login
+        - in: path
+          name: id
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Course"
+    get:
+      description: Получить текущий статус выполнения курса
+      parameters:
+        - in: path
+          name: login
+        - in: path
+          name: id
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/CourseStatus"
 
 components:
   schemas:
-    course:
+    Course:
       properties:
         id:
           type: integer
         name:
           type: string
+        skill:
+          type: string
+    CourseStatus:
+      properties:
+        status:
+          type: string
+          enum:
+            - pending
+            - inProgress
+            - done
+        progress:
+          type: integer
+          minimum: 0
+          maximum: 100

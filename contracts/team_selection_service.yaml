@@ -1,0 +1,108 @@
+openapi: "3.0.0"
+info:
+  title: Team selection service
+  version: "1.0"
+  description: "
+      - решает задачу подбора оптимальной команды для выполнения проекта на основе набора необходимых навыков \n
+      - позволяет создать команду из результатов подбора \n
+      - хранит историю запросов и решений \n
+    "
+paths:
+  /teams:
+    post:
+      description: Создать команду для нового проекта
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/TeamCreateUpdateBody"
+      responses:
+        200:
+          description: success
+    get:
+      description: Получить данные по всем активным командам
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Team"
+
+  /teams/{id}:
+    get:
+      description: Получить информацию о команде
+      parameters:
+        - in: path
+          name: id
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Team"
+    put:
+      description: Изменить информацию о команде
+      parameters:
+        - in: path
+          name: id
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/TeamCreateUpdateBody"
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Team"
+
+  /teams/{id}/selectMembers:
+    post:
+      description: Подобрать участников для достижения минимального счёта, при минимальной стоимости
+      parameters:
+        - in: path
+          name: id
+      responses:
+        200:
+          description: success
+          content:
+            "application/json":
+              schema:
+                $ref: "#/components/schemas/Team"
+
+
+components:
+  schemas:
+    TeamCreateUpdateBody:
+      properties:
+        project:
+          type: string
+        skills:
+          type: object
+        members:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+    Team:
+      properties:
+        project:
+          type: string
+        skills:
+          type: object
+        score:
+          description: Количество позиций по навыкам, которые не закрыты при текущем составе
+          type: string
+        members:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
